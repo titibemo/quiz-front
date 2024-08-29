@@ -1,4 +1,6 @@
 <template>
+<h1>loginView test</h1>
+  
 
 <Login></Login>
 
@@ -7,20 +9,8 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+//import { onMounted } from "vue";
 import Login from "./../components/Login.vue";
-import axios from "axios"
-
-    //axios.get('http://localhost:3020/api/users/')
-
-  // onMounted( () =>{
-
-    /*
-    axios.get('http://localhost:3020/api/users')
-        .then(response => console.log(response)
-        )
-        .catch (err => console.log("err", err));
-    */
 
 /*
     async function getData() {
@@ -39,16 +29,29 @@ import axios from "axios"
     
 //getData();
 
-    fetch('http://localhost:3020/api/users', {
+let a;
+
+async function getData() {
+    await fetch('http://localhost:3020/api/users', {
     method: "GET",
     headers: {
       Accept: 'application/json', 
       "Content-Type": "application/json",
     },
     })
-    .then(response => console.log(response)
+    .then(response => a = response
     )
-    .catch(err => console.log("err", err));
+    .catch(err => console.log("encore une erreur :", err));
+  }
+
+  getData();
+
+  console.log(a);
+  
+
+  
+
+
     
 
   
