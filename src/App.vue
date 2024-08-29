@@ -1,4 +1,7 @@
 <template>
+
+  <h1>TEST</h1>
+
   <nav>
     <router-link to="/">Accueil</router-link> |
     <router-link to="/connexion">Connexion</router-link> |

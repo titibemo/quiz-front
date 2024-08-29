@@ -1,6 +1,6 @@
 <template>
 
-    <form action="http://localhost:3020/api/users" method="GET">
+    <form action="http://localhost:3020/api/users/login" method="POST">
         <label for="username">Entrez votre nom d'utilisateur</label><br>
         <input type="text" name="username" id="username" placeholder="john"><br>
 
@@ -8,11 +8,20 @@
         <input type="password" name="password" id="password" placeholder="john"><br>
 
         <button type="submit">Se connecter</button>
-
     </form>
+
+    <button @click="test">Je me déco</button>
 
 </template>
 
 <script setup>
+
+const test = () =>{
+    window.location.href = "http://localhost:3020/api/users/logout";
+}
+
+
+console.log("cookie", document.cookie);
+
 
 </script>
