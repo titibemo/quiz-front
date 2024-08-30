@@ -21,7 +21,7 @@ const userList = ref(null)
 const options = {
   method: 'GET',
   headers: {
-    accept: 'application/json',
+    accept: 'application/json', 
   }
 };
 

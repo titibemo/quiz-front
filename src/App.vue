@@ -6,7 +6,8 @@
     <router-link to="/">Accueil</router-link> |
     <router-link to="/connexion">Connexion</router-link> |
     <router-link to="/liste-utilisateur">Liste des utilisateurs</router-link> |
-    <router-link to="/enregistrer-utilisateur">Enregistrer un nouveau utilisateurs</router-link>
+    <router-link to="/enregistrer-utilisateur">Enregistrer un nouveau utilisateurs</router-link> |
+    <router-link to="/admin">Admin</router-link>
   </nav>
   <router-view/>
 </template>
