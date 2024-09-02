@@ -18,17 +18,39 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/liste-utilisateur',
     name: 'listUser',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
     component: () => import(/* webpackChunkName: "about" */ '../views/ListUserView.vue')
   },
   {
     path: '/enregistrer-utilisateur',
     name: 'register',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
     component: () => import(/* webpackChunkName: "about" */ '../views/RegisterView.vue')
   },
   {
@@ -42,10 +64,103 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/admin',
     name: 'admin',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
+  },
+  {
+    path: '/admin/les-quiz',
+    name: 'read-quiz',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/ReadQuizView.vue')
+  },
+  {
+    path: '/admin/creer-un-quiz',
+    name: 'create-quiz',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/CreateQuizView.vue')
+  },
+  {
+    path: '/admin/modifier-un-quiz/:id',
+    name: 'modify-quiz',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/ModifyQuizView.vue')
+  },
+  /* -------------------------------------------------------------------------------------------- */
+  {
+    path: '/admin/ajouter-question',
+    name: 'modify-quiz',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/ModifyQuizView.vue')
   },
 
 ]

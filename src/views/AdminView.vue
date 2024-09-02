@@ -1,10 +1,17 @@
 <template>
 
-    <h1>administrateur</h1>
+    <div v-if=" userRole === 'admin'">
+        <h1>administrateur</h1>
+        <p>bonjour</p>
+    </div>
+    <div v-else>
+        <p>Veuillez vous connecter </p>
+    </div>
 
-    <h1 v-if=" userRole === 'admin'"> jai gagné</h1>
 
     
+
+
 
 </template>
 
@@ -13,10 +20,19 @@ import { ref } from 'vue';
 
 let cookie = document.cookie.slice(13);
 
-
-
 const userId = ref(null)
 const userRole = ref(null)
+
+fetch('http://localhost:3020/api/users/test', {
+    headers: {Authorization: `Bearer ${cookie}`}
+}).then(resp => resp.json()).then(data => {
+    console.log(data);
+        userId.value = data.id
+        userRole.value = data.role
+    })
+ 
+
+
 
 /*
 const options = {
@@ -29,13 +45,9 @@ const options = {
 */
 
 
-fetch('http://localhost:3020/api/users/test', {
-    headers: {Authorization: `Bearer ${cookie}`}
-}).then(resp => resp.json()).then(data => {
-    userId.value = data.id
-    userRole.value = data.role
-    
-})
+
+
+
 
 
 

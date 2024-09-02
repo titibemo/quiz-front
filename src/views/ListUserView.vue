@@ -21,11 +21,11 @@ const userList = ref(null)
 const options = {
   method: 'GET',
   headers: {
-    accept: 'application/json', 
+    accept: 'application/json',
   }
 };
 
-fetch('http://localhost:3020/api/users', options).then(handleFetch);
+fetch('http://localhost:3020/api/users/listUsers', options).then(handleFetch);
 
 function handleFetch(response)
 {

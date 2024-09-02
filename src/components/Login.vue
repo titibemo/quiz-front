@@ -10,18 +10,20 @@
         <button type="submit">Se connecter</button>
     </form>
 
-    <button @click="test">Je me déco</button>
+    <button @click="disconnect">Je me déco</button>
 
 </template>
 
 <script setup>
 
-const test = () =>{
+let cookie = document.cookie;
+
+const disconnect = () =>{
+
     window.location.href = "http://localhost:3020/api/users/logout";
 }
 
 
-console.log("cookie", document.cookie);
 
 
 </script>
