@@ -80,7 +80,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     
     component: () => import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
-  },
+  },//-------------------------------------------------------------------------------------------title quiz CRUD---------------------
   {
     path: '/admin/les-quiz',
     name: 'read-quiz',
@@ -141,9 +141,9 @@ const routes: Array<RouteRecordRaw> = [
     
     component: () => import(/* webpackChunkName: "about" */ '../views/quiz/ModifyQuizView.vue')
   },
-  /* -------------------------------------------------------------------------------------------- */
+  //-------------------------------------------------------------------------------------------question CRUD---------------------
   {
-    path: '/admin/ajouter-question',
+    path: '/admin/creer-question/quiz-:id/',
     name: 'modify-quiz',
     beforeEnter: (to, from, next) => {
       let cookie = document.cookie.slice(13);
@@ -160,7 +160,7 @@ const routes: Array<RouteRecordRaw> = [
       
     },
     
-    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/ModifyQuizView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/question/CreateQuestionView.vue')
   },
 
 ]

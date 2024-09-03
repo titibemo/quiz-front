@@ -15,8 +15,9 @@
             </form>
             -->
             <a :href="`http://localhost:8080/admin/modifier-un-quiz/${quiz.id_quiz }`">Modifier un quiz</a>
-            <a :href="`http://localhost:8080/admin/ajouter-question/${quiz.id_quiz }`">Modifier les questions du quiz</a>
+            <a :href="`http://localhost:8080/admin/creer-question/quiz-${quiz.id_quiz}`">Ajouter des questions</a>
             <hr>
+            
     </li>
     
 </ul>
