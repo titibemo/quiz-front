@@ -1,39 +1,37 @@
 <template>
 
   <h1>créer de nouvelles questions - Quiz : {{ quiz }}</h1>
-    <!--action="http://localhost:3020/api/question/newQuestion"-->
 
+    <!--action="`http://localhost:3020/api/question/validateQuestions/quiz-${id}`"-->
   <section class="quiz-container">
+    <form > 
 
-    
-    
+      <div v-for="count in totalCount" :key="numberQuestion">
+        <form action="" @submit.prevent="nextQuestion">
 
-
-    <div v-for="count in totalCount" :key="numberQuestion">
-      <form action="" @submit.prevent="nextQuestion">
-
-      <div :style="{display: count == numberQuestion ? 'block' : 'none'}">
-        <p>question {{count}}</p>
-        <input  v-model="inputTest"  type="text" :name="`question${count}`" ><br>
-        <button >ajouter une autre question</button>
-
-
-        <div v-for="(answer,i) in totalAnswer" :key="i">
-          <label :for="`answer${answer}`">Réponse 1:</label>
-          <input v-model="answerTest[i]" type="text" name="answer">
-          <input @click="miou" type="radio" name="answer" :value="answerTest[i]">
-          <button type="button" @click="duplicateAnswer">ajouter une réponse</button>
-          <button type="button" @click="reduceAnswer(i)">retirer la réponse</button>
-        </div>
+          <div :style="{display: count == numberQuestion ? 'block' : 'none'}">
+            <p>question {{count}}</p>
+            <input  v-model="inputTest"  type="text" :name="`question${count}`" ><br>
+            <button >ajouter une autre question</button>
+            
+            
+            <div v-for="(answer,i) in totalAnswer" :key="i">
+              <label :for="`answer${answer}`">Réponse 1:</label>
+              <input v-model="answerTest[i]" type="text" name="answer">
+              <input @click="validateCorrectAnswer" type="radio" name="answer" :value="answerTest[i]">
+              <button type="button" @click="reduceAnswer(i)">retirer la réponse</button>
+            </div>
+            <button type="button" @click="duplicateAnswer">ajouter une réponse</button>
+          </div>
+          <br>
+        </form>
       </div>
       
-
-
-      </form>
-    </div>
-
-
-
+      <button @click="validateQuiz" type="button">ajouter le quiz</button>
+    </form>
+    
+    
+    
 
     <div v-for="d in data">
       <p>le numéro de la question : {{d.id}}</p>
@@ -43,12 +41,13 @@
         <p>
          les réponses {{ a }}
         </p>
+
+
       </div>
       
     </div>
     
-      
-
+    
   </section>
 
 
@@ -65,6 +64,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 
+
+const id = window.location.href.slice(48);
 const inputTest = ref('')
 const answerTest = ref([])
 const totalCount = ref(1);
@@ -75,11 +76,11 @@ const numberQuestion = ref(totalCount.value);
 
 const quiz = ref('')
 const data = ref([]);
-const id = window.location.href.slice(48);
 
-function miou (e){
-  console.log(e);
-  
+
+
+function validateCorrectAnswer (e){
+  correctAnswer.value = e.target.value;
 }
 
 function duplicateAnswer () {
@@ -108,7 +109,6 @@ console.log("ca: ", correctAnswer.value);
     let answers = [];
     answerTest.value.forEach(element => {
       answers.push(element)
-      console.log(answers);
     });
 
     
@@ -232,6 +232,83 @@ function handleFetch(response)
         console.error(response.statusText);
     }
   }
+
+  // ------------------------------------- TEST FETCH POST QUIZ
+
+  
+
+
+  
+  const validateQuiz = () => {
+    let sendId = []
+    let sendQuestion = []
+    let sendAnswer = []
+    let sendCorrectAnswer = []
+    
+    data.value.forEach(d => {
+      console.log(d.id);
+      
+    sendId.push(d.id)
+    sendQuestion.push(d.question)
+    d.answer.forEach(a => {
+      sendAnswer.push(a)
+    });
+    sendCorrectAnswer.push(d.goodAnswer)
+    });
+
+    console.log(
+      "id", sendId,
+      "Q", sendQuestion,
+      "A", sendAnswer,
+      "CA", sendCorrectAnswer,
+    );
+    
+    saveData(sendId, sendQuestion, sendAnswer, sendCorrectAnswer)
+
+    
+  }
+
+  
+const saveData = (sendId, sendQuestion, sendAnswer, sendCorrectAnswer) => {
+
+  const options2 = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json" 
+    },
+    body: JSON.stringify({
+      idQuestion: `${sendId}`,
+      questions: `${sendQuestion}`,
+      answers: `${sendAnswer}`,
+      correctAnswer: `${sendCorrectAnswer}`
+    })
+  };
+    
+  fetch(`http://localhost:3020/api/question/validateQuestions/${id}`, options2).then(handleFetch2);
+  
+  function handleFetch2(response)
+  {
+    if(response.ok)
+      {
+        response.json()
+          .then(data=>{
+              /*quiz.value = data[0].name_quiz;*/
+            console.log("data", data);
+          })
+          .catch(error=>console.error(error));
+      }
+      else
+      {
+          console.error(response.statusText);
+      }
+    }
+}
+
+
+
+
+
+
 </script>
 
 <style scoped>
