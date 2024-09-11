@@ -1,58 +1,32 @@
 <template>
 
-    <h1>créer de nouvelles questions - Quiz :</h1>
-  
-    
-    <button @click="datasend">Clique sur moi</button>
-  
-      <!--<button @click="duplicateQuestion">Ajouter une question</button>-->
-      
-  </template>
-  
-  <script setup>
-  import { computed, ref } from 'vue';
-  
- 
-    // ------------------------------------- TEST FETCH POST QUIZ
-  
-    
-    const datasend = async () => {
-        try{
-            const response = fetch(`http://localhost:3020/api/question/validateQuestions/4`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json" 
-                },
-                //body: JSON.stringify({data: 'toto'})
-            })
-        .then(response =>{
-            if(response.ok){
-                console.log("ok");
-            }   
-            else{
-                console.log("miss");
-            }
-         })
-        .then(data => console.log(data))    
-        }
-        catch(e){
-        console.log(e);
-    
-        }
-    }
+    <h1>Test récupération</h1>
 
-datasend()
-    
+</template>
   
-  </script>
+<script setup lang="ts">
+    import { computed, ref } from 'vue';
+    import type { Quiz, Test } from './../../type/config'
   
-  <style scoped>
+const aaa :Test = {
+    testName: "10"
+}
+
+const b :Quiz[] = [{
+    idQuiz: 10,
+    nomQuiz: "10",
+    question: 10,
+}]
+  
+</script>
+  
+<style scoped>
   
   .quiz-container{
     display: flex;
     justify-content: space-evenly;
   }
   
-  </style>
+</style>
   
   
