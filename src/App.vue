@@ -1,20 +1,25 @@
 <template>
 
-  <nav>
+  <nav :style="{display: currentPath != 'http://localhost:8080/' ? 'block' : 'none'}">
   <!--<router-link class="nav" to="/">Accueil</router-link> -->
-    <div v-if="userRole === 'admin'" >
-      <router-link class="nav" to="/admin">Admin →</router-link> 
-      <router-link class="nav" to="/liste-utilisateur">Liste des utilisateurs</router-link> 
-      <router-link class="nav" to="/enregistrer-utilisateur">Enregistrer un nouveau utilisateurs</router-link> 
-      <router-link class="nav" to="/admin/creer-un-quiz">Créer un quiz</router-link> 
-      <router-link class="nav" to="/admin/les-quiz">Voir les quiz</router-link>
-    </div>
-    <div v-if="cookie != ''">
-      <a class="nav" href="http://localhost:3020/api/users/logout">Se déconnecter</a>
-    </div>
-    <div v-else>
-      <router-link class="nav" to="/connexion">Connexion</router-link> 
-    </div>
+      <div>
+        <router-link class="nav" to="/admin">Admin →</router-link> 
+        <router-link class="nav" to="/liste-utilisateur">Liste des utilisateurs</router-link> 
+        <router-link class="nav" to="/enregistrer-utilisateur">Enregistrer un nouveau utilisateurs</router-link> 
+        <router-link class="nav" to="/admin/creer-un-quiz">Créer un quiz</router-link> 
+        <router-link class="nav" to="/admin/les-quiz">Voir les quiz</router-link>
+        <div v-if="userRole === ('admin' || 'user')">
+          <router-link class="nav" to="#">user →</router-link> 
+          <router-link class="nav" to="/quiz">Liste des quiz</router-link> 
+        </div >
+      </div>
+      <div v-if="cookie != ''">
+        <a class="nav" href="http://localhost:3020/api/users/logout">Se déconnecter</a>
+      </div>
+      <div v-else>
+        <router-link class="nav" to="/connexion">Connexion</router-link> 
+      </div>
+
   </nav>
   <router-view/>
 </template>
@@ -23,17 +28,23 @@
 <script setup>
 import { ref } from 'vue';
 
+//const currentPath = window.location.href
+
+
+
+
 let cookie = document.cookie.slice(13);
 const userId = ref(null)
 const userRole = ref(null)
 
 fetch('http://localhost:3020/api/users/test', {
-    headers: {Authorization: `Bearer ${cookie}`}
-}).then(resp => resp.json()).then(data => {
+  headers: {Authorization: `Bearer ${cookie}`}
+}).then(resp => resp.json())
+  .then(data => {
     console.log(data);
-        userId.value = data.id
-        userRole.value = data.role
-    })
+    userId.value = data.id
+    userRole.value = data.role
+  })
 
 
 
@@ -62,7 +73,6 @@ nav{
   background-color:  var(--main-color-hover);
   color: white;
   height: 100%;
-  padding: 10px;
 }
 .nav{
   font-size: 1.2em;

@@ -144,7 +144,8 @@ const routes: Array<RouteRecordRaw> = [
   //-------------------------------------------------------------------------------------------question CRUD---------------------
   {
     path: '/admin/creer-question/quiz-:id/',
-    name: 'modify-quiz',
+    name: 'create-question',
+    props: true,
     beforeEnter: (to, from, next) => {
       let cookie = document.cookie.slice(13);
       fetch('http://localhost:3020/api/users/test', {
@@ -162,12 +163,17 @@ const routes: Array<RouteRecordRaw> = [
     
     component: () => import(/* webpackChunkName: "about" */ '../views/question/CreateQuestionView.vue')
   },
+  //----------------------------------------------------------------------------------USER QUIZ---------------------
   {
-    path: '/test',
-    name: 'test',   
-    component: () => import(/* webpackChunkName: "about" */ '../views/question/TestFetch.vue')
+    path: '/quiz',
+    name: 'quiz',   
+    component: () => import(/* webpackChunkName: "about" */ '../views/quiz/UserQuizView.vue')
   },
-
+  {
+    path: '/quiz/:slug/:id',
+    name: 'question',   
+    component: () => import(/* webpackChunkName: "about" */ '../views/question/UserQuestionsView.vue')
+  },
 ]
 
 const router = createRouter({

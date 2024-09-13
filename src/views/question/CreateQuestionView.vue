@@ -1,34 +1,38 @@
 <template>
 
-  <h1>créer de nouvelles questions - Quiz : {{ quiz }}</h1>
+  <h1 class="title">créer de nouvelles questions - Quiz : TODO AFFICHER NOM Quiz</h1>
 
-    <!--action="`http://localhost:3020/api/question/validateQuestions/quiz-${id}`"-->
+  {{ totalCount }}
+
   <section class="quiz-container">
-    <form > 
+    <form class="answerQuiz"> 
 
-      <div class="formQuestion" v-for="count in totalCount" :key="numberQuestion">
-        <form action="" @submit.prevent="nextQuestion">
+      <form action="" @submit.prevent="nextQuestion">
+        <div class="formQuestion" v-for="count in totalCount" :key="numberQuestion">
 
-          <div class="answerQuiz":style="{display: count == numberQuestion ? 'block' : 'none'}">
+          <div :style="{display: count == numberQuestion ? 'block' : 'none'}">
+            <div class="optionQuestions">
+              <button class="previousQuestion" @click="previewQuestion">Question précédente</button>
+              <button class="delete" type="button" @click="deleteQuestion">Supprimer la question</button>
+              <button class="nextQuestion">Question suivante</button>
+            </div>
             <p>question {{count}}</p>
             <input class="titleQuestion" v-model="inputTest"  type="text" :name="`question${count}`" ><br>
-            <button class="nextQuestion">question suivante</button>
-            <button class="delete" type="button" @click="deleteQuestion">supprimer la question</button>
             
             
-            <div v-for="(answer,i) in totalAnswer" :key="i">
-              <label :for="`answer${answer}`">Réponse 1:</label>
-              <input v-model="answerTest[i]" type="text" name="answer">
-              <input @click="validateCorrectAnswer" type="radio" name="answer" :value="answerTest[i]">
-              <button class="delete" type="button" @click="reduceAnswer(i)">retirer la réponse</button>
+            <div class="answerQuiz" v-for="(answer,i) in totalAnswer" :key="i">
+              <label :for="`answer${answer}`">Réponse {{ answer }}:</label>
+              <input class="inputQuizAnswer" v-model="answerTest[i]" type="text" name="answer">
+              <input class="correctAnswer" @click="validateCorrectAnswer" type="radio" name="answer" :value="answerTest[i]">
+              <button class="delete" type="button" @click="reduceAnswer(i)">Retirer la réponse</button>
             </div>
-            <button class="addQuestion" type="button" @click="duplicateAnswer">ajouter une réponse</button>
+            <button class="addAnswer" type="button" @click="duplicateAnswer">+</button>
           </div>
-          <br>
-        </form>
-      </div>
+          
+        </div>
+      </form>
       
-      <button @click="validateQuiz" type="button">ajouter le quiz</button>
+      <button class="validateQuiz" @click="validateQuiz" type="button">Ajouter le quiz</button>
     </form>
     
     <!-- TODO A EFFACER -->
@@ -41,7 +45,6 @@
          les réponses {{ a }}
         </p>
 
-
       </div>
       
     </div>
@@ -49,7 +52,6 @@
     
   </section>
     
-    <button class="previousQuestion" @click="previewQuestion">Question précédente</button>
     <!--<button @click="duplicateQuestion">Ajouter une question</button>-->
     
 </template>
@@ -58,19 +60,97 @@
 import { computed, ref } from 'vue';
 import  Quiz  from './../../type/config'
 
-
 const id = window.location.href.slice(48);
+//------------------------------- TEST RECOVERY DATA
+
+const options2 = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+  }
+};
+
+fetch(`http://localhost:3020/api/question/showQuestions/${id}`, options2).then(handleFetch2);
+
+/*
+data.value.splice(totalCount.value-1, 1, {
+        question: inputTest.value,
+        id: totalCount.value,
+        answer: answers,
+        goodAnswer: correctAnswer.value
+      })
+*/
+
+
+function handleFetch2(response)
+{
+  let listQuestion;
+
+  if(response.ok)
+    {
+      response.json()
+        .then(d=>{
+            //listQuestion.value = data;
+            console.log("data", d);
+            //listQuestion = JSON.parse(d[0].name_question)
+            listQuestion = JSON.parse(d[0].name_question)
+            //listAnswers.value = JSON.parse(data[0].answers_question)
+            //titleQuiz = data[0].name_quiz
+            //console.log("listQ", JSON.parse(data[0].name_question))
+            //console.log("listA", JSON.parse(data[0].answers_question))
+                    
+            listQuestion.forEach((element,i) => {
+              totalCount.value++
+              numberQuestion.value++
+              data.value.splice(i, 1, {
+              question: element,
+            })
+
+              console.log(
+                "Finaldata", data.value,
+              );
+
+            });
+           
+/*
+            data.value.push({
+              question: listQuestion
+            })
+*/
+            /*listQuestion.forEach(element => {
+              data.value.push({
+              question: element,
+              //id: totalCount.value,
+              //answer: answers,
+              //goodAnswer: correctAnswer.value
+            })*/
+              
+              //totalCount.value = 3
+              //nextQuestion()
+
+              //TODO boucler dans l'objet pour afficher toutes les données
+              
+            
+        })
+        .catch(error=>console.error(error));
+    }
+    else
+    {
+        console.error(response.statusText);
+    }
+  }
+
+
 const inputTest = ref('')
 const answerTest = ref([])
 const totalCount = ref(1);
 const totalAnswer = ref(1)
 const correctAnswer = ref("")
 const numberQuestion = ref(totalCount.value);
-
-
-
 const quiz = ref('')
 const data = ref([]);
+
+
 
 
 
@@ -157,7 +237,7 @@ function previewQuestion(){
   }
   else{
     numberQuestion.value--
-  totalAnswer.value = 1
+    totalAnswer.value = 1
   
   //inputTest.value = data.value[numberQuestion].question
 
@@ -183,8 +263,6 @@ function previewQuestion(){
   }
   }
  
-
-
   /*
   data.value[numberQuestion.value-1].answer.forEach(element => {
     answerTest.value.push(element)
@@ -192,10 +270,6 @@ function previewQuestion(){
   });
 */
 }
-
-
-
-
 
 const options = {
   method: 'GET',
@@ -224,11 +298,6 @@ function handleFetch(response)
   }
 
   // ------------------------------------- TEST FETCH POST QUIZ
-
-  
-
-
-  
   const validateQuiz = () => {
     let sendId = []
     let sendQuestion = []
@@ -258,8 +327,6 @@ function handleFetch(response)
     );
     
     saveData(sendId, sendQuestion, sendAnswer, sendCorrectAnswer)
-
-    
   }
 
   
@@ -292,9 +359,10 @@ const saveData = async (sendId, sendQuestion, sendAnswer, sendCorrectAnswer) => 
 
 const deleteQuestion = () =>{
   data.value.splice(totalCount.value-1, 1)
-  numberQuestion.value--
-  totalCount.value--
   previewQuestion()
+  nextQuestion()
+  // TODO GOOD VALUE numberQuestion.value--
+  // TODO GOOD VALUE totalCount.value--
 }
 
 
@@ -346,7 +414,6 @@ const deleteQuestion = () =>{
 
 
 
-
 </script>
 
 <style scoped>
@@ -355,10 +422,16 @@ const deleteQuestion = () =>{
   margin: auto;
 }
 
+.formQuestion{
+  width: 100%;
+  margin-bottom: 50px;
+}
+
 .optionQuestions{
   display: grid;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: repeat(3, 150px);
   padding: 10px;
+  justify-content: space-around;
 }
 .title{
   font-size: 1.5em;
@@ -369,6 +442,8 @@ const deleteQuestion = () =>{
   text-align: center;
   font-size: 1.2em;
   padding: 5px;
+  width: 90%;
+  margin: 15px;
 }
 
 .inputQuizQuestion{
@@ -380,12 +455,13 @@ const deleteQuestion = () =>{
  
 }
 .answerQuiz{
+  margin: 5px;
   justify-content: space-between;
   text-align: center;
-  box-shadow: 4px 5px 1px -2px rgba(0,0,0,0.14);
+  box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.52);
   padding: 10px
 }
-.answerInputQuiz{
+.inputQuizAnswer{
   margin: 5px;
   width: 50%;
 }
@@ -394,11 +470,14 @@ const deleteQuestion = () =>{
 }
 .addAnswer{
   display: block;
-  margin: 5px auto;
-  background-color: lightblue;
+  margin: 10px auto;
+  background-color: #7dd3fc;
   color: black;
   padding: 5px;
-  border-radius: 15px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px
+
 }
 .optionAnswerQuiz{
   margin-top: 10px;
@@ -408,21 +487,24 @@ const deleteQuestion = () =>{
 .nextQuestion, .previousQuestion{
   display: flex;
   justify-content: center;
-  background-color: lightblue;
+  background-color: #7dd3fc;
   margin: auto;
   border-radius: 15px;
   padding: 5px;
 }
 .validateQuiz{
-  background-color: rgb(89, 224, 89);
+  display: block;
+  background-color: #4ade80;
   color: black;
+  margin: 10px;
   padding: 10px;
   border-radius: 15px;
   width: 100%;
+  margin: auto
 }
 
 .delete{
-  background-color: rgb(248, 83, 83);
+  background-color: #f43f5e;
   color: white;
   padding: 5px;
   border-radius: 15px;

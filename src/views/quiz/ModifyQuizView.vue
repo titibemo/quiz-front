@@ -1,5 +1,7 @@
 <template>
 
+  
+
     <h1>Modifier le quiz</h1>
 
     <form :action="`http://localhost:3020/api/quiz/modifyQuiz/${id}`" method="POST">
