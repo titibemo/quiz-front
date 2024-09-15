@@ -1,6 +1,6 @@
 <template>
 
-  <nav :style="{display: currentPath != 'http://localhost:8080/' ? 'block' : 'none'}">
+  <nav >
   <!--<router-link class="nav" to="/">Accueil</router-link> -->
       <div>
         <router-link class="nav" to="/admin">Admin →</router-link> 
@@ -64,9 +64,6 @@ fetch('http://localhost:3020/api/users/test', {
     --main-color: #20282F;
     --main-color-hover: #508960;
 }
-</style>
-
-<style scoped>
 
 nav{
   display: flex;

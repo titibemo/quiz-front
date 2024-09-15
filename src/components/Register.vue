@@ -28,7 +28,7 @@
 
 </script>
 
-<style setup>*
+<style scoped>
 .register{
     background-color: rgba(211, 211, 211, 1);
     padding: 20px 10px;

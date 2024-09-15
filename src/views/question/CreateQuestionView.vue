@@ -85,6 +85,8 @@ data.value.splice(totalCount.value-1, 1, {
 function handleFetch2(response)
 {
   let listQuestion;
+  let listAnswers;
+  let correctAnswer;
 
   if(response.ok)
     {
@@ -94,16 +96,22 @@ function handleFetch2(response)
             console.log("data", d);
             //listQuestion = JSON.parse(d[0].name_question)
             listQuestion = JSON.parse(d[0].name_question)
-            //listAnswers.value = JSON.parse(data[0].answers_question)
+            listAnswers = JSON.parse(d[0].answers_question)
+            correctAnswer =JSON.parse(d[0].correct_answer)
             //titleQuiz = data[0].name_quiz
             //console.log("listQ", JSON.parse(data[0].name_question))
             //console.log("listA", JSON.parse(data[0].answers_question))
+            console.log("correctAnswer", correctAnswer);
+            
                     
             listQuestion.forEach((element,i) => {
               totalCount.value++
               numberQuestion.value++
               data.value.splice(i, 1, {
               question: element,
+              answer: listAnswers[i],
+              id: totalCount.value
+              //goodAnswer: 
             })
 
               console.log(
