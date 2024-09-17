@@ -1,24 +1,25 @@
 <template>
 
-  <nav >
+  <nav>
   <!--<router-link class="nav" to="/">Accueil</router-link> -->
-      <div>
+      <div v-if="userRole === 'admin'">
         <router-link class="nav" to="/admin">Admin →</router-link> 
         <router-link class="nav" to="/liste-utilisateur">Liste des utilisateurs</router-link> 
         <router-link class="nav" to="/enregistrer-utilisateur">Enregistrer un nouveau utilisateurs</router-link> 
         <router-link class="nav" to="/admin/creer-un-quiz">Créer un quiz</router-link> 
         <router-link class="nav" to="/admin/les-quiz">Voir les quiz</router-link>
-        <div v-if="userRole === ('admin' || 'user')">
-          <router-link class="nav" to="#">user →</router-link> 
-          <router-link class="nav" to="/quiz">Liste des quiz</router-link> 
-        </div >
+      </div>
+      
+      <div v-if="userRole === 'user' || 'admin'">
+        <router-link class="nav" to="#">user →</router-link> 
+        <router-link class="nav" to="/quiz">Liste des quiz</router-link> 
       </div>
       <div v-if="cookie != ''">
         <a class="nav" href="http://localhost:3020/api/users/logout">Se déconnecter</a>
       </div>
-      <div v-else>
+      <!--<div v-else>
         <router-link class="nav" to="/connexion">Connexion</router-link> 
-      </div>
+      </div>-->
 
   </nav>
   <router-view/>
@@ -70,6 +71,7 @@ nav{
   background-color:  var(--main-color-hover);
   color: white;
   height: 100%;
+  padding: 15px;
 }
 .nav{
   font-size: 1.2em;

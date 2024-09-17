@@ -1,16 +1,17 @@
 <template>
 
+  <section>
     <h1>Voici la liste des quiz :</h1>
+      <div class="quizList" v-for="quiz in listQuiz">
+        <div class="titleQuiz">
+          <a :href="`http://localhost:8080/quiz/${quiz.slug_quiz}/${quiz.id_quiz }`">{{quiz.name_quiz}}</a>
+        </div>
+      </div>
+  </section>
 
-    <ul>
-        <li v-for="quiz in listQuiz">
-           {{ quiz.id_quiz }} - {{quiz.name_quiz}}
-                <a :href="`http://localhost:8080/quiz/${quiz.slug_quiz}/${quiz.id_quiz }`">Démarrer le quiz</a>
-                <hr>
-                
-        </li>
-        
-    </ul>
+  
+
+
 
 </template>
 
@@ -27,7 +28,7 @@ const options = {
   }
 };
 
-fetch('http://localhost:3020/api/quiz/listQuiz', options).then(handleFetch);
+fetch('http://localhost:3020/api/quiz/listAvailableQuiz', options).then(handleFetch);
 
 function handleFetch(response)
 {
@@ -48,3 +49,25 @@ function handleFetch(response)
   }
 
 </script>
+
+<style scoped>
+
+.quizList{
+  width: 350px;
+  height: 200px;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,0.8) 0%, rgba(153,172,240,0.8) 49%, rgba(2,0,36,1) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleQuiz a{
+  background-color: rgba(211, 211, 211, 0.301);
+  padding: 5px;
+  color: white;
+  font-size: 2em;
+  text-decoration: none;
+}
+
+</style>

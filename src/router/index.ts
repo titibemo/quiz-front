@@ -35,6 +35,25 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/ListUserView.vue')
   },
   {
+    path: '/modifier-utilisateur/:id',
+    name: 'modifyUser',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/ModifyUserView.vue')
+  },
+  {
     path: '/enregistrer-utilisateur',
     name: 'register',
     beforeEnter: (to, from, next) => {
