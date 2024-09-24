@@ -307,6 +307,7 @@ function handleFetch(response)
 
   // ------------------------------------- TEST FETCH POST QUIZ
   const validateQuiz = () => {
+    nextQuestion();
     let sendId = []
     let sendQuestion = []
     let sendAnswer = []
@@ -368,7 +369,7 @@ const saveData = async (sendId, sendQuestion, sendAnswer, sendCorrectAnswer) => 
 const deleteQuestion = () =>{
   data.value.splice(totalCount.value-1, 1)
   previewQuestion()
-  nextQuestion()
+  //nextQuestion()
   // TODO GOOD VALUE numberQuestion.value--
   // TODO GOOD VALUE totalCount.value--
 }

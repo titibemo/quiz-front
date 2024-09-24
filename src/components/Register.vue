@@ -1,6 +1,6 @@
 <template>
 
-    <section class="register">
+    <div class="register">
         <h2>S'inscrire</h2>
         <form action="http://localhost:3020/api/users/register" method="POST">
         <label for="username">Entrez votre nom d'utilisateur :</label><br>
@@ -18,7 +18,7 @@
         <button class="buttonRegister" type="submit">S'inscrire</button>
 
     </form>
-</section>
+</div>
 
     
 
@@ -34,8 +34,18 @@
     padding: 20px 10px;
     text-align: center;
     border-radius: 15px;
-    width: 90%;
     margin: 10px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+.login{
+    background-color: rgba(211, 211, 211, 1);
+    padding: 20px 10px;
+    text-align: center;
+    border-radius: 15px;
+}
+h2{
+    margin-bottom: 15px;
 }
 label{
     margin: 5px 0;
@@ -55,4 +65,6 @@ input{
     width: 100%;
     border-radius: 15px;
 }
+
+
 </style>

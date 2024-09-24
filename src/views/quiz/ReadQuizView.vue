@@ -192,6 +192,8 @@ tr:nth-child(even) {
 }
 .actions {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /*--TOGGLE*/

@@ -8,12 +8,14 @@
       </h1>
       <h2 class="title">Quiz'land</h2>
     </div>
+    <!--
     <div>
       <Login></Login>
     </div>
     <div>
       <Register></Register>
     </div>
+    -->
     
   </section>
 
@@ -28,7 +30,7 @@ import Register from './../components/Register.vue';
 <style scoped>
 
 .mainPage{
-  height: 100vh;
+  height: 92vh;
   background-color:antiquewhite;
   background: rgba(0, 0, 0, 0.4) url("./../assets/pictures/bg-homePage.jpg");
   background-size: cover;

@@ -10,8 +10,6 @@
 
         <button class="connexion" type="submit">Se connecter</button>
     </form>
-    <p class="notRegister">Vous n'êtes pas encore inscrit ?</p>
-    <button class="register">S'inscrire</button>
 </div>
     
 
@@ -32,10 +30,13 @@ const disconnect = () =>{
 
 <style scoped>
     .login{
-        background-color: rgba(211, 211, 211, 1);
+        background-color: rgba(211, 211, 211, 0.356);
         padding: 20px 10px;
         text-align: center;
         border-radius: 15px;
+        margin: 10px auto 0 auto;
+        display: flex;
+        flex-direction: column;
     }
     h2{
         margin-bottom: 15px;
@@ -57,10 +58,6 @@ const disconnect = () =>{
         padding: 5px;
         width: 100%;
         border-radius: 15px;
-    }
-    .notRegister{
-        margin-top: 10px;
-        font-size: 1.1em;
     }
 
 

@@ -16,6 +16,7 @@
               <td>{{ user.name }}</td>
                 <td> {{ user.firstname }}</td>
                 <td class="actions">
+                  <a class="add" :href="`http://localhost:8080/liste-utilisateur/${user.id}`">Voir les quiz de l'utilisateurs</a>
                   <a class="edit" :href="`http://localhost:8080/modifier-utilisateur/${user.id}`">Modifier l'utilisateur</a>
                   <form :action="`http://localhost:3020/api/users/eraseUser/${user.id}`" method="POST">
                     <button class="delete" type="submit">Effacer l'utilisateur</button>
@@ -89,7 +90,8 @@ tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 .actions {
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 .btn {
   padding: 5px 10px;
@@ -97,6 +99,15 @@ tr:nth-child(even) {
   border: none;
   border-radius: 3px;
   cursor: pointer;
+}
+.add{
+  text-decoration: none;
+  background-color: green;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 15px;
+  text-align: center;
 }
 .edit {
   text-decoration: none;

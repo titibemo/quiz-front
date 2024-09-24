@@ -1,29 +1,9 @@
 <template>
 
-    <h1>quiz - {{ titleQuiz }} </h1>
+  <section>
 
-   <!-- <form action="">
-
-        <section class="questions" v-for="(question,i) in listQuestion">
-            <h2 class="titleQuestion">
-                {{ question }}
-            </h2>
-
-            <div class="answers" >
-              <div class="radio-group" v-for="answer in listAnswers[i]">
-                <input type="radio" :name="`answer${i}`" :value=answer>
-                <label :for=answer> {{answer}}</label>
-              </div>
-            </div>
-
-            <hr>
-
-        </section>
-
-    </form>
--->
-    <hr>
-
+    <h1 class="section-title">quiz - {{ titleQuiz }} </h1>
+    
     <div class="quiz-container">
       <form>
           <div class="quiz-question" v-for="(question,i) in listQuestion">
@@ -31,56 +11,85 @@
               <div class="answerContainer">
                 <div class="answer" v-for="answer in listAnswers[i]">
                   <div class="radio-group">
-                    <input type="radio" :id="answer" :name="`answer${i}`" :value="answer">
+                    <input @click="addAnswer(answer, i)" type="radio" :id="answer" :name="`answer${i}`" :value="answer">
                     <label class="labelAnswer" :for="answer"> {{ answer }}</label>
                   </div>              
                 </div>
               </div>
           </div>
+          <button class="submit" @click.prevent="validateUserQuiz" type="submit">Valider le quiz</button>
       </form>
-  </div>
+    </div>
 
-    <hr>
+  </section>
 
-    <!--
-    <div class="quiz-container">
-      <form>
-          <div class="quiz-question">
-              <p>Quel est le capital de la France ?</p>
-              <div class="radio-group">
-                  <input type="radio" id="paris" name="answer" value="paris">
-                  <label for="paris">Paris</label>
-              </div>
-              <div class="radio-group">
-                  <input type="radio" id="lyon" name="answer" value="lyon">
-                  <label for="lyon">Lyon</label>
-              </div>
-              <div class="radio-group">
-                  <input type="radio" id="marseille" name="answer" value="marseille">
-                  <label for="marseille">Marseille</label>
-              </div>
-              <div class="radio-group">
-                  <input type="radio" id="toulouse" name="answer" value="toulouse">
-                  <label for="toulouse">Toulouse</label>
-              </div>
-          </div>
-      </form>
-  </div>
-  -->
 
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router'
 
-const id = window.location.href.slice(37);
+const route = useRoute()
+const id = route.params.id
+
 
 
 const listQuestion = ref(null);
 const listAnswers = ref([]);
+const userAnswers = ref([]);
+const userId = ref(null)
+const quizId = ref(null)
 let titleQuiz;
 
+function addAnswer (answer, i){
+  userAnswers.value[i] = answer;
+  console.log(userId.value);
+  
+}
 
+const validateUserQuiz = async () => {
+
+try {
+  const response = await fetch(`http://localhost:3020/api/question/validateUserQuiz/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+      "userAnswers": userAnswers.value,
+      "idUser": userId.value,
+      "idQuiz": quizId.value
+      })
+    });
+    const data = await response.json();
+// enter you logic when the fetch is successful
+    console.log("donnees envoye", data);
+  } catch(error) {
+
+  
+// enter your logic for when there is an error (ex. error toast)
+
+    console.log(error)
+    } 
+}
+
+
+
+
+
+
+
+let cookie = document.cookie.slice(13);
+fetch('http://localhost:3020/api/users/test', {
+  headers: {Authorization: `Bearer ${cookie}`}
+}).then(resp => resp.json())
+  .then(data => {
+    userId.value = data.id
+  })
+
+
+console.log(id);
 
 
 const options = {
@@ -103,11 +112,17 @@ function handleFetch(response)
         .then(data=>{
             //listQuestion.value = data;
             console.log("data", data);
+            quizId.value = JSON.parse(data[0].id_quiz)
             listQuestion.value = JSON.parse(data[0].name_question)
             listAnswers.value = JSON.parse(data[0].answers_question)
             titleQuiz = data[0].name_quiz
             console.log("listQ", JSON.parse(data[0].name_question))
             console.log("listA", JSON.parse(data[0].answers_question))
+            console.log("numberQuestion", listQuestion.value)
+            listQuestion.value.forEach(question => {
+              question = ""
+              userAnswers.value.push(question)
+            });
         })
         .catch(error=>console.error(error));
     }
@@ -122,7 +137,10 @@ function handleFetch(response)
 
 <style scoped>
 
-
+.section-title{
+  text-align: center;
+  margin: 15px 0;
+}
 
 .titleQuestion{
   text-align: center;
@@ -130,7 +148,8 @@ function handleFetch(response)
   padding: 5px;
   margin: 15px 0;
   width: 100%;
-  background-color: #ddd;
+  background-color: #b11fa7f3;
+  color: white;
 }
 
 .answers{
@@ -219,6 +238,13 @@ function handleFetch(response)
 
 .radio-group label:hover {
   background-color: #e0e0e0;
+}
+.submit{
+  margin-top: 15px;
+  background-color: #4ade80;
+  padding: 5px;
+  width: 100%;
+  border-radius: 15px;
 }
 
 </style>

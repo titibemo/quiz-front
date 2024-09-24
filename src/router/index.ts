@@ -5,6 +5,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
+    /*beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data){
+           //window.location.href = "http://localhost:8080/quiz";
+           router.push('/quiz')
+        }
+        else{
+            next()
+        }
+      })
+    },*/
+    
     component: HomeView
   },
   {
@@ -33,6 +49,25 @@ const routes: Array<RouteRecordRaw> = [
       
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/ListUserView.vue')
+  },
+  {
+    path: '/liste-utilisateur/:id',
+    name: 'quizUser',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+    }).then(resp => resp.json()).then(data => {
+        console.log(data);
+        if(data.role != "admin"){
+           window.location.href = "http://localhost:8080";
+        }
+        else{
+            next()
+        }})
+      
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/users/DisplayUsersQuiz.vue')
   },
   {
     path: '/modifier-utilisateur/:id',
@@ -185,12 +220,45 @@ const routes: Array<RouteRecordRaw> = [
   //----------------------------------------------------------------------------------USER QUIZ---------------------
   {
     path: '/quiz',
-    name: 'quiz',   
+    name: 'quiz',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);      
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data);
+        if( ( (data.role != "user") && (data.role !== "admin")) ){
+           router.push('/');
+        }
+        else{
+            next()
+        }
+      })
+    },   
     component: () => import(/* webpackChunkName: "about" */ '../views/quiz/UserQuizView.vue')
   },
   {
     path: '/quiz/:slug/:id',
-    name: 'question',   
+    name: 'question',
+    beforeEnter: (to, from, next) => {
+      let cookie = document.cookie.slice(13);
+      fetch('http://localhost:3020/api/users/test', {
+        headers: {Authorization: `Bearer ${cookie}`}
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data);
+        if( ( (data.role != "user") && (data.role !== "admin")) ){
+          router.push('/');
+       }
+       else{
+           next()
+       }
+        
+      })
+    },   
     component: () => import(/* webpackChunkName: "about" */ '../views/question/UserQuestionsView.vue')
   },
 ]
